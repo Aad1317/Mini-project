@@ -22,7 +22,7 @@ export default function Signup({ onSwitchToLogin, role = 'student' }: SignupProp
     setLoading(true);
     const { error } = await signUp(formData.email, formData.password, formData.fullName, formData.role as 'student' | 'teacher');
     if (error) {
-      setError(error.message);
+      setError(error);
     } else {
       setSuccess(true);
       setTimeout(onSwitchToLogin, 2000);
@@ -68,7 +68,7 @@ export default function Signup({ onSwitchToLogin, role = 'student' }: SignupProp
         <Input label="Password" type="password" value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })} required />
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Role</label>
-          <select value={formData.role} onChange={(e) => setFormData({ ...formData, role: e.target.value })} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none">
+          <select value={formData.role} onChange={(e) => setFormData({ ...formData, role: e.target.value as 'student' | 'teacher' })} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none">
             <option value="student">Student</option>
             <option value="teacher">Teacher</option>
           </select>

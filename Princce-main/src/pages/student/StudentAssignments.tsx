@@ -1,8 +1,12 @@
 import { FileText, Calendar, CheckCircle } from 'lucide-react';
 import Card from '../../components/Card';
-import { mockAssignments } from '../../lib/mockData';
+import { useCollection } from '../../lib/firestoreLMS';
 
 export default function StudentAssignments() {
+  const { data: mockAssignments, loading } = useCollection('assignments');
+
+  if (loading) return <p className="text-center text-gray-500 py-8">Loading assignments...</p>;
+
   return (
     <div className="space-y-6">
       <div>

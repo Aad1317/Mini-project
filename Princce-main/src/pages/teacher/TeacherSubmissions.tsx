@@ -1,8 +1,12 @@
-import { ClipboardCheck, User, Clock } from 'lucide-react';
+import { User, Clock } from 'lucide-react';
 import Card from '../../components/Card';
-import { mockSubmissions } from '../../lib/mockData';
+import { useCollection } from '../../lib/firestoreLMS';
 
 export default function TeacherSubmissions() {
+  const { data: mockSubmissions, loading } = useCollection('submissions');
+
+  if (loading) return <p className="text-center text-gray-500 py-8">Loading submissions...</p>;
+
   return (
     <div className="space-y-6">
       <div>

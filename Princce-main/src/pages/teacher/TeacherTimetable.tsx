@@ -1,10 +1,14 @@
 import { Calendar, Clock, MapPin } from 'lucide-react';
 import Card from '../../components/Card';
-import { mockTimetable } from '../../lib/mockData';
+import { useCollection } from '../../lib/firestoreLMS';
 
 export default function TeacherTimetable() {
+  const { data: mockTimetable, loading } = useCollection('timetable');
+
   const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
   
+  if (loading) return <p className="text-center text-gray-500 py-8">Loading timetable...</p>;
+
   return (
     <div className="space-y-6">
       <div>

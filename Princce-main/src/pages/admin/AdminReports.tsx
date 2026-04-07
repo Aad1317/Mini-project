@@ -1,88 +1,12 @@
-import { useEffect, useState } from 'react';
+
 import { BarChart3, TrendingUp, Users, FileText, Award } from 'lucide-react';
 import Card from '../../components/Card';
-import { supabase } from '../../lib/supabase';
+import { useAdminStats } from '../../lib/firestoreLMS';
 
-interface SystemStats {
-  totalUsers: number;
-  students: number;
-  teachers: number;
-  admins: number;
-  totalAssignments: number;
-  totalSubmissions: number;
-  gradedSubmissions: number;
-  averageGrade: number;
-  submissionRate: number;
-  activeUsers: number;
-}
+
 
 export default function AdminReports() {
-  const [stats, setStats] = useState<SystemStats>({
-    totalUsers: 0,
-    students: 0,
-    teachers: 0,
-    admins: 0,
-    totalAssignments: 0,
-    totalSubmissions: 0,
-    gradedSubmissions: 0,
-    averageGrade: 0,
-    submissionRate: 0,
-    activeUsers: 0,
-  });
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchSystemStats();
-  }, []);
-
-  const fetchSystemStats = async () => {
-    setLoading(true);
-
-    const [
-      usersRes,
-      studentsRes,
-      teachersRes,
-      adminsRes,
-      assignmentsRes,
-      submissionsRes,
-      gradedRes,
-      gradesData,
-    ] = await Promise.all([
-      supabase.from('profiles').select('id', { count: 'exact', head: true }),
-      supabase.from('profiles').select('id', { count: 'exact', head: true }).eq('role', 'student'),
-      supabase.from('profiles').select('id', { count: 'exact', head: true }).eq('role', 'teacher'),
-      supabase.from('profiles').select('id', { count: 'exact', head: true }).eq('role', 'admin'),
-      supabase.from('assignments').select('id', { count: 'exact', head: true }),
-      supabase.from('submissions').select('id', { count: 'exact', head: true }),
-      supabase.from('submissions').select('id', { count: 'exact', head: true }).eq('status', 'graded'),
-      supabase.from('submissions').select('grade').eq('status', 'graded'),
-    ]);
-
-    const avgGrade =
-      gradesData.data && gradesData.data.length > 0
-        ? gradesData.data.reduce((sum, s) => sum + (s.grade || 0), 0) / gradesData.data.length
-        : 0;
-
-    const submissionRate =
-      assignmentsRes.count && studentsRes.count
-        ? ((submissionsRes.count || 0) / (assignmentsRes.count * studentsRes.count)) * 100
-        : 0;
-
-    setStats({
-      totalUsers: usersRes.count || 0,
-      students: studentsRes.count || 0,
-      teachers: teachersRes.count || 0,
-      admins: adminsRes.count || 0,
-      totalAssignments: assignmentsRes.count || 0,
-      totalSubmissions: submissionsRes.count || 0,
-      gradedSubmissions: gradedRes.count || 0,
-      averageGrade: Math.round(avgGrade),
-      submissionRate: Math.round(submissionRate),
-      activeUsers: usersRes.count || 0,
-    });
-
-    setLoading(false);
-  };
+  const { stats, loading } = useAdminStats();
 
   if (loading) {
     return <div className="text-center py-8">Loading reports...</div>;

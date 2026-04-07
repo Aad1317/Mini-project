@@ -1,35 +1,12 @@
-import { useEffect, useState } from 'react';
+
 import { Users, FileText } from 'lucide-react';
 import Card from '../../components/Card';
-import { supabase } from '../../lib/supabase';
+import { useAdminStats } from '../../lib/firestoreLMS';
 
 export default function AdminHome() {
-  const [stats, setStats] = useState({
-    users: 0,
-    students: 0,
-    teachers: 0,
-    assignments: 0,
-  });
+  const { stats, loading } = useAdminStats();
 
-  useEffect(() => {
-    fetchStats();
-  }, []);
-
-  const fetchStats = async () => {
-    const [usersRes, studentsRes, teachersRes, assignmentsRes] = await Promise.all([
-      supabase.from('profiles').select('id', { count: 'exact', head: true }),
-      supabase.from('profiles').select('id', { count: 'exact', head: true }).eq('role', 'student'),
-      supabase.from('profiles').select('id', { count: 'exact', head: true }).eq('role', 'teacher'),
-      supabase.from('assignments').select('id', { count: 'exact', head: true }),
-    ]);
-
-    setStats({
-      users: usersRes.count || 0,
-      students: studentsRes.count || 0,
-      teachers: teachersRes.count || 0,
-      assignments: assignmentsRes.count || 0,
-    });
-  };
+  if (loading) return <div className="text-center py-8 text-gray-500">Loading admin dashboard...</div>;
 
   const statCards = [
     { title: 'Total Users', value: stats.users, icon: Users, color: 'blue' },

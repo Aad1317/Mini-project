@@ -1,8 +1,12 @@
 import { Calendar, CheckCircle, XCircle, Clock } from 'lucide-react';
 import Card from '../../components/Card';
-import { mockAttendance } from '../../lib/mockData';
+import { useCollection } from '../../lib/firestoreLMS';
 
 export default function StudentAttendance() {
+  const { data: mockAttendance, loading } = useCollection('attendance');
+
+  if (loading) return <p className="text-center text-gray-500 py-8">Loading attendance...</p>;
+
   return (
     <div className="space-y-6">
       <div>

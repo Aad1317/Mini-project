@@ -1,5 +1,5 @@
 import { GraduationCap, BookOpen, Users, Award, ArrowRight } from 'lucide-react';
-import Button from '../components/Button';
+
 
 interface HomeProps {
   onNavigate: (path: 'student-login' | 'teacher-login') => void;

@@ -1,8 +1,12 @@
 import { Bell, Calendar } from 'lucide-react';
 import Card from '../../components/Card';
-import { mockAnnouncements } from '../../lib/mockData';
+import { useCollection } from '../../lib/firestoreLMS';
 
 export default function StudentAnnouncements() {
+  const { data: mockAnnouncements, loading } = useCollection('announcements');
+
+  if (loading) return <p className="text-center text-gray-500 py-8">Loading announcements...</p>;
+
   return (
     <div className="space-y-6">
       <div>

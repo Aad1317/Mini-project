@@ -1,8 +1,12 @@
 import { BookOpen, Users } from 'lucide-react';
 import Card from '../../components/Card';
-import { mockCourses } from '../../lib/mockData';
+import { useCollection } from '../../lib/firestoreLMS';
 
 export default function StudentCourses() {
+  const { data: mockCourses, loading } = useCollection('courses');
+
+  if (loading) return <p className="text-center text-gray-500 py-8">Loading courses...</p>;
+
   return (
     <div className="space-y-6">
       <div>

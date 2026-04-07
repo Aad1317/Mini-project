@@ -1,11 +1,11 @@
 import { BookOpen, Users, Calendar, ClipboardCheck, FileText, Bell } from 'lucide-react';
 import Card from '../../components/Card';
 import { useAuth } from '../../contexts/AuthContext';
-import { mockStats } from '../../lib/mockData';
+import { useTeacherStats } from '../../lib/firestoreLMS';
 
 export default function TeacherHome() {
   const { profile } = useAuth();
-  const stats = mockStats.teacher;
+  const stats = useTeacherStats();
 
   return (
     <div className="space-y-6">

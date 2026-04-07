@@ -14,14 +14,14 @@ export default function StudentLogin({ onBackHome, onSwitchToSignup }: StudentLo
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const { signIn } = useAuth();
+  const { signIn, signInWithGoogle } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setLoading(true);
 
-    const { error: signInError } = await signIn(email, password, 'student');
+    const { error: signInError } = await signIn(email, password);
 
     if (signInError) {
       setError(signInError);
@@ -90,6 +90,23 @@ export default function StudentLogin({ onBackHome, onSwitchToSignup }: StudentLo
               {loading ? 'Signing in...' : 'Sign In as Student'}
             </Button>
           </form>
+
+          <div className="mt-4">
+            <Button 
+              type="button"
+              onClick={async () => {
+                setLoading(true);
+                const { error } = await signInWithGoogle('student');
+                if (error) setError(error);
+                setLoading(false);
+              }} 
+              disabled={loading} 
+              className="w-full bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 flex items-center justify-center space-x-2"
+            >
+              <img src="https://www.google.com/favicon.ico" alt="Google" className="w-4 h-4" />
+              <span>Sign in with Google</span>
+            </Button>
+          </div>
 
           <div className="mt-6 pt-6 border-t border-gray-200">
             <button

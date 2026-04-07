@@ -1,4 +1,4 @@
-import { GraduationCap, BookOpen, Users, Award, ArrowRight, Calendar, CheckCircle, TrendingUp, Clock, Target, BarChart } from 'lucide-react';
+import { GraduationCap, BookOpen, Users, ArrowRight, Calendar, CheckCircle, Target, BarChart } from 'lucide-react';
 
 interface WelcomeProps {
   onNavigate: (path: 'student-login' | 'teacher-login') => void;

@@ -7,6 +7,10 @@ import TeacherSubmissions from './teacher/TeacherSubmissions';
 import TeacherTimetable from './teacher/TeacherTimetable';
 import TeacherClasses from './teacher/TeacherClasses';
 import TeacherProfile from './teacher/TeacherProfile';
+import Feed from './Feed';
+import Societies from './Societies';
+import Events from './Events';
+import Placements from './Placements';
 
 export default function TeacherDashboard() {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -15,6 +19,14 @@ export default function TeacherDashboard() {
     switch (activeTab) {
       case 'dashboard':
         return <TeacherHome />;
+      case 'feed':
+        return <Feed />;
+      case 'societies':
+        return <Societies />;
+      case 'events':
+        return <Events />;
+      case 'placements':
+        return <Placements />;
       case 'announcements':
         return <TeacherAnnouncements />;
       case 'assignments':
